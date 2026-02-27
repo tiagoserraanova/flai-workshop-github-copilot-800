@@ -17,6 +17,9 @@ if codespace_name:
 else:
     base_url = "http://localhost:8000"
 
+# Make the base_url available for use in templates/responses
+API_BASE_URL = base_url
+
 router = DefaultRouter()
 router.register(r'users', OctoFitUserViewSet, basename='octofit_user')
 router.register(r'teams', TeamViewSet, basename='team')

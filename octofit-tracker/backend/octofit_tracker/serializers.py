@@ -10,7 +10,7 @@ class OctoFitUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OctoFitUser
-        fields = ['id', 'name', 'email', 'age', 'fitness_goal', 'profile_picture']
+        fields = ['id', 'username', 'name', 'email', 'age', 'fitness_goal', 'profile_picture', 'team']
 
 
 class TeamSerializer(serializers.ModelSerializer):
@@ -43,7 +43,7 @@ class LeaderboardSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Leaderboard
-        fields = ['id', 'user', 'score']
+        fields = ['id', 'user', 'score', 'team', 'calories']
 
 
 class WorkoutSerializer(serializers.ModelSerializer):

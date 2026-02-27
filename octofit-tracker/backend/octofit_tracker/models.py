@@ -2,11 +2,13 @@ from django.db import models
 
 
 class OctoFitUser(models.Model):
+    username = models.CharField(max_length=100, unique=True, default='')
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     age = models.IntegerField(default=0)
     fitness_goal = models.CharField(max_length=200, blank=True)
     profile_picture = models.CharField(max_length=500, blank=True)
+    team = models.CharField(max_length=100, blank=True, default='')
 
     class Meta:
         db_table = 'users'
@@ -43,6 +45,8 @@ class Activity(models.Model):
 class Leaderboard(models.Model):
     user = models.CharField(max_length=100)
     score = models.IntegerField(default=0)
+    team = models.CharField(max_length=100, blank=True, default='')
+    calories = models.IntegerField(default=0)
 
     class Meta:
         db_table = 'leaderboard'

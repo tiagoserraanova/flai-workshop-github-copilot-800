@@ -1,9 +1,319 @@
-/* OctoFit Tracker - Global Styles */
+/* OctoFit Tracker - ASCII Terminal Theme */
 
-body {
-  background-color: #f0f4f8;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+:root {
+  --g:     #00ff41;   /* matrix green   */
+  --g-dim: #00b32c;   /* dim green      */
+  --g-dk:  #003d0e;   /* dark green bg  */
+  --y:     #ffd700;   /* yellow accent  */
+  --c:     #00ffff;   /* cyan           */
+  --r:     #ff4136;   /* red            */
+  --bg:    #0a0a0a;   /* near black     */
+  --sf:    #0f0f0f;   /* surface        */
 }
+
+/* ── RESET ROUNDS ─────────────────────────────────── */
+* { border-radius: 0 !important; }
+
+/* ── KEYFRAMES ────────────────────────────────────── */
+@keyframes blink  { 0%,100% { opacity:1 } 50% { opacity:0 } }
+@keyframes glow   { 0%,100% { text-shadow:0 0 5px var(--g),0 0 10px var(--g) }
+                    50%      { text-shadow:0 0 12px var(--g),0 0 28px var(--g),0 0 50px var(--g) } }
+@keyframes scan   { 0% { top:-4px } 100% { top:100vh } }
+@keyframes fadeIn { from { opacity:0; transform:translateY(6px) } to { opacity:1; transform:none } }
+
+/* ── BODY ─────────────────────────────────────────── */
+body {
+  background-color: var(--bg);
+  color: var(--g);
+  font-family: 'Courier New', Courier, monospace;
+  min-height: 100vh;
+}
+
+/* CRT scanline sweep */
+body::after {
+  content: '';
+  position: fixed;
+  left: 0; top: -4px;
+  width: 100%; height: 4px;
+  background: rgba(0,255,65,0.07);
+  animation: scan 10s linear infinite;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── SCROLLBAR ────────────────────────────────────── */
+::-webkit-scrollbar       { width:6px; background:var(--bg) }
+::-webkit-scrollbar-thumb { background:var(--g-dk) }
+::-webkit-scrollbar-thumb:hover { background:var(--g) }
+
+/* ── NAVBAR ───────────────────────────────────────── */
+.navbar {
+  background-color: var(--bg) !important;
+  border-bottom: 2px solid var(--g) !important;
+  padding: 0 !important;
+}
+.navbar-brand {
+  color: var(--g) !important;
+  font-weight: 900;
+  font-size: 0.95rem !important;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 0.65rem 1.1rem !important;
+  border-right: 2px solid var(--g);
+  animation: glow 4s ease-in-out infinite;
+}
+.navbar-brand:hover       { background:var(--g); color:var(--bg) !important }
+.navbar .nav-link {
+  color: var(--g-dim) !important;
+  font-size: 0.74rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 0.9rem 1rem !important;
+  border-right: 1px solid var(--g-dk);
+  transition: all .15s;
+}
+.navbar .nav-link:hover,
+.navbar .nav-link.active  { color:var(--bg) !important; background:var(--g) !important }
+.navbar-toggler           { border-color:var(--g) !important; color:var(--g) !important }
+
+/* ── PAGE HEADINGS ────────────────────────────────── */
+.page-heading {
+  color: var(--y);
+  border: none;
+  padding: 0;
+  font-weight: 900;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 1.25rem;
+}
+.page-heading::before { content: '>> '; color: var(--g) }
+.page-heading::after  { content: ' _'; color: var(--g); animation: blink 1s step-end infinite }
+
+/* ── TABLES ───────────────────────────────────────── */
+.table, .octofit-table {
+  color: var(--g) !important;
+  background: var(--bg) !important;
+  font-size: 0.8rem;
+  box-shadow: none !important;
+  border-collapse: collapse !important;
+}
+.table thead th,
+.table-dark th,
+.octofit-table thead th {
+  background: var(--g-dk) !important;
+  color: var(--y) !important;
+  border: 1px solid var(--g) !important;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.68rem;
+  font-weight: 900;
+}
+.table tbody td, .table tbody th {
+  background: var(--bg) !important;
+  color: var(--g) !important;
+  border: 1px solid var(--g-dk) !important;
+}
+.table-striped > tbody > tr:nth-of-type(odd) > td { background: var(--sf) !important }
+.table-hover tbody tr:hover td,
+.table-striped tbody tr:hover td    {
+  background: var(--g-dk) !important;
+  color: var(--y) !important;
+}
+.table-sm th, .table-sm td { padding: 0.3rem 0.5rem }
+
+/* ── CARDS ────────────────────────────────────────── */
+.card, .octofit-card {
+  background: var(--bg) !important;
+  border: 1px solid var(--g) !important;
+  color: var(--g) !important;
+  box-shadow: 0 0 8px rgba(0,255,65,.12) !important;
+  animation: fadeIn .3s ease;
+}
+.card:hover, .octofit-card:hover {
+  box-shadow: 0 0 20px rgba(0,255,65,.3) !important;
+  border-color: var(--y) !important;
+  transform: none;
+}
+.card-header {
+  background: var(--g-dk) !important;
+  color: var(--y) !important;
+  border-bottom: 1px solid var(--g) !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+}
+.card-header.bg-danger,
+.card-header.bg-primary,
+.card-header.bg-success,
+.card-header.bg-warning,
+.card-header.bg-info    {
+  background: var(--g-dk) !important;
+  color: var(--y) !important;
+  border-left: 3px solid var(--g) !important;
+}
+.card-body  { background:var(--bg) !important; color:var(--g) !important }
+.card-text  { color:var(--g-dim) !important }
+
+/* ── BADGES ───────────────────────────────────────── */
+.badge {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 0.68rem;
+  padding: .2em .55em;
+}
+.badge.bg-danger, .badge.bg-primary,
+.badge.bg-success, .badge.bg-info    { background:var(--g-dk) !important; color:var(--g) !important; border:1px solid var(--g) }
+.badge.bg-warning                    { background:transparent !important; color:var(--y) !important; border:1px solid var(--y) }
+.badge.bg-secondary                  { background:transparent !important; color:var(--g-dim) !important; border:1px solid var(--g-dim) }
+.badge.bg-light                      { background:transparent !important; color:var(--c) !important; border:1px solid var(--c) }
+.badge.bg-white                      { background:transparent !important; color:var(--y) !important; border:1px solid var(--y) }
+.rounded-pill                        { border-radius:0 !important }
+
+/* ── BUTTONS ──────────────────────────────────────── */
+.btn {
+  font-family: 'Courier New', Courier, monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.72rem;
+  border-width: 1px;
+}
+.btn-primary         { background:transparent !important; color:var(--g) !important; border-color:var(--g) !important }
+.btn-primary:hover   { background:var(--g) !important; color:var(--bg) !important }
+.btn-secondary       { background:transparent !important; color:var(--g-dim) !important; border-color:var(--g-dim) !important }
+.btn-secondary:hover { background:var(--g-dim) !important; color:var(--bg) !important }
+.btn-outline-primary        { color:var(--g) !important; border-color:var(--g) !important }
+.btn-outline-primary:hover  { background:var(--g) !important; color:var(--bg) !important }
+.btn-close { filter:invert(1) sepia(1) saturate(5) hue-rotate(90deg) !important }
+
+/* ── FORMS ────────────────────────────────────────── */
+.form-control, .form-select {
+  background: var(--bg) !important;
+  color: var(--g) !important;
+  border: 1px solid var(--g) !important;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.82rem;
+}
+.form-control:focus, .form-select:focus {
+  background: var(--bg) !important;
+  color: var(--g) !important;
+  border-color: var(--y) !important;
+  box-shadow: 0 0 0 .2rem rgba(0,255,65,.15) !important;
+}
+.form-label  { color:var(--y) !important; font-size:.72rem; letter-spacing:1px; text-transform:uppercase }
+textarea     { resize:vertical }
+
+/* ── MODALS ───────────────────────────────────────── */
+.modal-content  { background:var(--bg) !important; border:2px solid var(--g) !important; color:var(--g) !important; box-shadow:0 0 40px rgba(0,255,65,.25) !important }
+.modal-header   { background:var(--g-dk) !important; border-bottom:1px solid var(--g) !important }
+.modal-title    { color:var(--y) !important; text-transform:uppercase; letter-spacing:2px; font-size:.88rem }
+.modal-footer   { border-top:1px solid var(--g-dk) !important; background:var(--bg) !important }
+
+/* ── ALERTS ───────────────────────────────────────── */
+.alert-danger { background:transparent !important; border:1px solid var(--r) !important; color:var(--r) !important; font-size:.8rem }
+
+/* ── PROGRESS ─────────────────────────────────────── */
+.progress       { background:var(--g-dk) !important; border:1px solid var(--g) !important; height:6px !important }
+.progress-bar   { background:var(--g) !important }
+
+/* ── LINKS ────────────────────────────────────────── */
+a { color:var(--c) !important; text-decoration:none }
+a:hover { color:var(--y) !important }
+code { color:var(--c) !important; background:transparent !important; font-family:'Courier New',Courier,monospace }
+
+/* ── HERO SECTION ─────────────────────────────────── */
+.hero-section {
+  background: var(--bg);
+  border: 2px solid var(--g);
+  box-shadow: 0 0 30px rgba(0,255,65,.15), inset 0 0 40px rgba(0,255,65,.02);
+  padding: 1.5rem 2rem;
+  margin: 1rem 0;
+  position: relative;
+}
+.hero-section::before {
+  content: '[ OCTOFIT TRACKER - FITNESS SYSTEM v1.0 ]';
+  position: absolute;
+  top: -0.6rem; left: 1.5rem;
+  background: var(--bg);
+  padding: 0 0.5rem;
+  color: var(--y);
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+}
+.hero-ascii {
+  color: var(--g);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(0.45rem, 1.2vw, 0.68rem);
+  line-height: 1.15;
+  white-space: pre;
+  margin: 0;
+  text-shadow: 0 0 6px rgba(0,255,65,.5);
+  overflow-x: auto;
+}
+.hero-tagline {
+  color: var(--y);
+  font-size: 0.72rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-top: 1rem;
+  border-top: 1px solid var(--g-dk);
+  padding-top: 0.75rem;
+}
+.hero-status {
+  color: var(--g-dim);
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+}
+
+/* ── FEATURE CARDS ────────────────────────────────── */
+.feature-card {
+  background: var(--bg);
+  border: 1px solid var(--g-dk);
+  padding: 1.25rem 1rem 1.25rem 1.25rem;
+  cursor: pointer;
+  transition: all .15s ease;
+  position: relative;
+  color: var(--g);
+}
+.feature-card::before {
+  content: '+--';
+  position: absolute; top: -1px; left: -1px;
+  color: var(--g-dim); font-size:.6rem; background:var(--bg); padding:0 2px; line-height:1;
+}
+.feature-card::after {
+  content: '--+';
+  position: absolute; bottom: -1px; right: -1px;
+  color: var(--g-dim); font-size:.6rem; background:var(--bg); padding:0 2px; line-height:1;
+}
+.feature-card:hover {
+  border-color: var(--g);
+  box-shadow: 0 0 18px rgba(0,255,65,.25);
+  color: var(--y);
+}
+.feature-card:hover .feature-icon  { color: var(--y) }
+.feature-card:hover .feature-title { color: var(--y) }
+.feature-card:hover .feature-desc  { color: var(--g) !important }
+.feature-icon  { font-size:.72rem; color:var(--g-dim); letter-spacing:1px; display:block; margin-bottom:.4rem }
+.feature-title { color:var(--g); font-weight:700; font-size:.8rem; letter-spacing:3px; text-transform:uppercase; margin-bottom:.3rem }
+.feature-desc  { color:var(--g-dim) !important; font-size:.72rem; margin:0 }
+
+/* ── SPINNER ──────────────────────────────────────── */
+.loading-container {
+  display: flex; justify-content: center; align-items: center; min-height: 200px;
+}
+.spinner-border { border-color:var(--g) !important; border-right-color:transparent !important }
+.text-muted     { color:var(--g-dim) !important }
+
+/* ── RANK BADGE ───────────────────────────────────── */
+.rank-badge {
+  width:28px; height:28px;
+  border:1px solid var(--g);
+  display:inline-flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:.72rem;
+  color:var(--y); background:var(--g-dk);
+}
+
 
 /* Navbar */
 .navbar-brand {

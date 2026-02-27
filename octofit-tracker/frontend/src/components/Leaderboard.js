@@ -27,30 +27,70 @@ function Leaderboard() {
       });
   }, []);
 
-  if (loading) return <div className="container mt-4"><p>Loading leaderboard...</p></div>;
-  if (error) return <div className="container mt-4"><p className="text-danger">Error: {error}</p></div>;
+  const rankColors = ['warning', 'secondary', 'danger'];
+  const rankEmojis = ['🥇', '🥈', '🥉'];
+
+  if (loading) return (
+    <div className="loading-container">
+      <div className="text-center">
+        <div className="spinner-border text-warning" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+        <p className="mt-2 text-muted">Loading leaderboard...</p>
+      </div>
+    </div>
+  );
+
+  if (error) return (
+    <div className="container mt-4">
+      <div className="alert alert-danger" role="alert">
+        <strong>Error:</strong> {error}
+      </div>
+    </div>
+  );
 
   return (
     <div className="container mt-4">
-      <h2>Leaderboard</h2>
-      <table className="table table-striped table-bordered">
-        <thead className="table-dark">
-          <tr>
-            <th>Rank</th>
-            <th>User</th>
-            <th>Score</th>
-          </tr>
-        </thead>
-        <tbody>
-          {entries.map((entry, index) => (
-            <tr key={entry.id}>
-              <td>{index + 1}</td>
-              <td>{entry.user}</td>
-              <td>{entry.score}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="d-flex align-items-center justify-content-between mb-3">
+        <h2 className="page-heading mb-0">🏆 Leaderboard</h2>
+        <span className="badge bg-warning text-dark rounded-pill fs-6">{entries.length} heroes</span>
+      </div>
+      <div className="card octofit-card">
+        <div className="card-body p-0">
+          <table className="table table-hover align-middle mb-0 octofit-table">
+            <thead className="table-dark">
+              <tr>
+                <th scope="col">Rank</th>
+                <th scope="col">Hero</th>
+                <th scope="col">Score</th>
+                <th scope="col">Progress</th>
+              </tr>
+            </thead>
+            <tbody>
+              {entries.map((entry, index) => (
+                <tr key={entry.id} className={index === 0 ? 'table-warning' : ''}>
+                  <td>
+                    {index < 3
+                      ? <span className="fs-5">{rankEmojis[index]}</span>
+                      : <span className={`rank-badge bg-${rankColors[index] || 'light text-dark'}`}>{index + 1}</span>
+                    }
+                  </td>
+                  <td><strong>{entry.user}</strong></td>
+                  <td><span className="badge bg-warning text-dark fs-6">{entry.score.toLocaleString()}</span></td>
+                  <td style={{ minWidth: '150px' }}>
+                    <div className="progress" style={{ height: '10px' }}>
+                      <div
+                        className="progress-bar bg-warning"
+                        style={{ width: `${Math.round((entry.score / (entries[0]?.score || 1)) * 100)}%` }}
+                      />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }

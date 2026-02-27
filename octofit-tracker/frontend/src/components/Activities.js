@@ -27,32 +27,57 @@ function Activities() {
       });
   }, []);
 
-  if (loading) return <div className="container mt-4"><p>Loading activities...</p></div>;
-  if (error) return <div className="container mt-4"><p className="text-danger">Error: {error}</p></div>;
+  if (loading) return (
+    <div className="loading-container">
+      <div className="text-center">
+        <div className="spinner-border text-success" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+        <p className="mt-2 text-muted">Loading activities...</p>
+      </div>
+    </div>
+  );
+
+  if (error) return (
+    <div className="container mt-4">
+      <div className="alert alert-danger" role="alert">
+        <strong>Error:</strong> {error}
+      </div>
+    </div>
+  );
 
   return (
     <div className="container mt-4">
-      <h2>Activities</h2>
-      <table className="table table-striped table-bordered">
-        <thead className="table-dark">
-          <tr>
-            <th>User</th>
-            <th>Activity Type</th>
-            <th>Duration (min)</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {activities.map((activity) => (
-            <tr key={activity.id}>
-              <td>{activity.user}</td>
-              <td>{activity.activity_type}</td>
-              <td>{activity.duration}</td>
-              <td>{activity.date}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="d-flex align-items-center justify-content-between mb-3">
+        <h2 className="page-heading mb-0">🏃 Activities</h2>
+        <span className="badge bg-success rounded-pill fs-6">{activities.length} logged</span>
+      </div>
+      <div className="card octofit-card">
+        <div className="card-body p-0">
+          <table className="table table-striped table-hover align-middle mb-0 octofit-table">
+            <thead className="table-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">User</th>
+                <th scope="col">Activity Type</th>
+                <th scope="col">Duration (min)</th>
+                <th scope="col">Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {activities.map((activity, index) => (
+                <tr key={activity.id}>
+                  <td><span className="badge bg-secondary">{index + 1}</span></td>
+                  <td><strong>{activity.user}</strong></td>
+                  <td><span className="badge bg-success bg-opacity-10 text-success border border-success">{activity.activity_type}</span></td>
+                  <td><span className="fw-semibold">{activity.duration}</span> <small className="text-muted">min</small></td>
+                  <td className="text-muted">{activity.date}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }

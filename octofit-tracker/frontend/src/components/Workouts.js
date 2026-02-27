@@ -27,32 +27,63 @@ function Workouts() {
       });
   }, []);
 
-  if (loading) return <div className="container mt-4"><p>Loading workouts...</p></div>;
-  if (error) return <div className="container mt-4"><p className="text-danger">Error: {error}</p></div>;
+  if (loading) return (
+    <div className="loading-container">
+      <div className="text-center">
+        <div className="spinner-border text-danger" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+        <p className="mt-2 text-muted">Loading workouts...</p>
+      </div>
+    </div>
+  );
+
+  if (error) return (
+    <div className="container mt-4">
+      <div className="alert alert-danger" role="alert">
+        <strong>Error:</strong> {error}
+      </div>
+    </div>
+  );
 
   return (
     <div className="container mt-4">
-      <h2>Workouts</h2>
-      {workouts.map((workout) => (
-        <div key={workout.id} className="card mb-3">
-          <div className="card-header">
-            <h4 className="mb-0">{workout.name}</h4>
-          </div>
-          <div className="card-body">
-            <p className="card-text">{workout.description}</p>
-            <p><strong>Duration:</strong> {workout.duration} minutes</p>
-            <h6>Exercises:</h6>
-            <ul className="list-group">
-              {(Array.isArray(workout.exercises)
-                ? workout.exercises
-                : JSON.parse(workout.exercises || '[]')
-              ).map((exercise, idx) => (
-                <li key={idx} className="list-group-item">{exercise}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      ))}
+      <div className="d-flex align-items-center justify-content-between mb-3">
+        <h2 className="page-heading mb-0">💪 Workouts</h2>
+        <span className="badge bg-danger rounded-pill fs-6">{workouts.length} programs</span>
+      </div>
+      <div className="row g-4">
+        {workouts.map((workout) => {
+          const exercises = Array.isArray(workout.exercises)
+            ? workout.exercises
+            : JSON.parse(workout.exercises || '[]');
+          return (
+            <div key={workout.id} className="col-md-6">
+              <div className="card octofit-card h-100">
+                <div className="card-header bg-danger text-white d-flex align-items-center justify-content-between">
+                  <h5 className="mb-0 fw-bold">💪 {workout.name}</h5>
+                  <span className="badge bg-white text-danger">{workout.duration} min</span>
+                </div>
+                <div className="card-body">
+                  <p className="card-text text-muted mb-3">{workout.description}</p>
+                  <div className="d-flex align-items-center gap-2 mb-2">
+                    <span className="badge bg-danger">⏱ {workout.duration} minutes</span>
+                    <span className="badge bg-secondary">{exercises.length} exercises</span>
+                  </div>
+                  <h6 className="fw-semibold mt-3 mb-2">Exercises:</h6>
+                  <ol className="list-group list-group-numbered list-group-flush">
+                    {exercises.map((exercise, idx) => (
+                      <li key={idx} className="list-group-item d-flex align-items-center px-0">
+                        {exercise}
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
